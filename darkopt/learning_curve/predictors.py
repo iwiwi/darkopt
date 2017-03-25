@@ -10,6 +10,8 @@ class SingleSamplingPredictor(object):
         self.traces_ = None
 
     def fit(self, x, y):
+        x = np.asarray(x)
+        y = np.asarray(y)
         self.traces_ = sampling.sample_single(x, y, self.curve, None, None)
         return self
 
@@ -38,6 +40,8 @@ class EnsembleSamplingPredictor(object):
         self.traces_ = None
 
     def fit(self, x, y):
+        x = np.asarray(x)
+        y = np.asarray(y)
         self.traces_ = sampling.sample_ensemble(
             x, y, self.curves, self.sample_options, self.map_options)
         return self
