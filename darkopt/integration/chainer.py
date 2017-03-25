@@ -11,7 +11,7 @@ import numpy as np
 from darkopt import learning_curve
 
 
-class ChainerPruningTrigger(_base):
+class ChainerTrigger(_base):
 
     # TODO(iwiwi): explain that this class inherits IntervalTrigger because of ProgressBar
 
@@ -26,7 +26,7 @@ class ChainerPruningTrigger(_base):
         assert isinstance(stop_trigger, chainer.training.IntervalTrigger)
         assert isinstance(test_trigger, chainer.training.IntervalTrigger)
         assert stop_trigger.unit == test_trigger.unit
-        super(ChainerPruningTrigger, self).__init__(stop_trigger.period, stop_trigger.unit)
+        super(ChainerTrigger, self).__init__(stop_trigger.period, stop_trigger.unit)
 
         if learning_curve_predictor is None:
             learning_curve_predictor = learning_curve.EnsembleSamplingPredictor()
