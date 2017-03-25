@@ -1,5 +1,10 @@
+try:
+    import xgboost.core
+    _available = True
+except ImportError:
+    _available = False
+
 import numpy as np
-import xgboost.core
 
 from darkopt import learning_curve
 
@@ -10,6 +15,9 @@ class XGBoostCallback(object):
                  pruning_prob_thresh=0.05,
                  maximize=False, learning_curve_predictor=None,
                  min_iters_before_prune=10, test_interval=10):
+        if not _available:
+            raise RuntimeError('XGBoost is not installed on your environment.')
+
         if maximize:
             known_best_score = -known_best_score
         self.known_best_score = known_best_score

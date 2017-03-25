@@ -1,16 +1,26 @@
-import chainer.training
+try:
+    import chainer.training
+    _available = True
+    _base = chainer.training.IntervalTrigger
+except ImportError:
+    _available = False
+    _base = object
+
 import numpy as np
 
 from darkopt import learning_curve
 
 
-class ChainerPruningTrigger(chainer.training.IntervalTrigger):
+class ChainerPruningTrigger(_base):
 
     # TODO(iwiwi): explain that this class inherits IntervalTrigger because of ProgressBar
 
     def __init__(self, score_key, known_best_score, stop_trigger,
                  maximize=False, test_trigger=(5, 'epoch'),
                  pruning_prob_thresh=0.05, learning_curve_predictor=None):
+        if not _available:
+            raise RuntimeError('Chainer is not installed on your environment.')
+
         stop_trigger = chainer.training.get_trigger(stop_trigger)
         test_trigger = chainer.training.get_trigger(test_trigger)
         assert isinstance(stop_trigger, chainer.training.IntervalTrigger)
