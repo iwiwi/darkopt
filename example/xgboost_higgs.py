@@ -69,7 +69,8 @@ def main():
         xgboost.train(plst, dm_tra, num_round, watchlist,
                       evals_result=evals_result,
                       callbacks=[darkopt_callback])
-        return darkopt.optimize.TrialResult(evals_result['val']['ams@0.15'][-1])
+
+        return evals_result['val']['ams@0.15'][-1]
 
     opt = darkopt.optimize.Optimizer(eval_func, param_space, maximize=True)
     best_trial_result = opt.optimize(args.n_trials)
