@@ -18,3 +18,11 @@ class TrialResult(object):
         self.score = score
         self.status = status
         self.info = info
+        self.param = None
+
+
+def get_trial_result(trial_result):
+    if isinstance(trial_result, TrialResult):
+        return trial_result
+    else:
+        return TrialResult(trial_result)
