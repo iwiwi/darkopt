@@ -1,9 +1,9 @@
-_status_strs = ['ok', 'error']
+_status_strs = ['ok', 'pruned', 'error']
 
 
 class TrialResult(object):
 
-    def __init__(self, score=None, status='ok', info=None):
+    def __init__(self, score=None, status='ok', **info):
         if status not in _status_strs:
             raise ValueError(
                 "status should be one of the following: {}".format(
@@ -11,9 +11,6 @@ class TrialResult(object):
 
         if status == 'ok':
             score = float(score)
-
-        if info is None:
-            info = {}
 
         self.score = score
         self.status = status
