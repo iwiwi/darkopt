@@ -34,6 +34,8 @@ class XGBoostCallback(object):
 
         self.history_iterations = []
         self.history_scores = []
+        self.prob_win = None
+        self.end_iteration = None
 
     def __call__(self, env):
         if np.isinf(self.known_best_score):
@@ -49,6 +51,7 @@ class XGBoostCallback(object):
 
         self.history_iterations.append(current_iteration)
         self.history_scores.append(current_score)
+        self.end_iteration = env.end_iteration
 
         if current_iteration < self.min_iters_to_prune:
             return
@@ -57,7 +60,29 @@ class XGBoostCallback(object):
 
         lcp = self.learning_curve_predictor
         lcp.fit(self.history_iterations, self.history_scores)
-        prob_win = lcp.predict_proba_less_than(env.end_iteration, self.known_best_score)
-        print('Probability to beat the known best score:', prob_win)
-        if prob_win < self.pruning_prob_thresh:
+        self.prob_win = lcp.predict_proba_less_than(env.end_iteration, self.known_best_score)
+        print('Probability to beat the known best score:', self.prob_win)
+        if self.prob_win < self.pruning_prob_thresh:
             raise xgboost.core.EarlyStopException(env.iteration)
+
+    def info(self):
+        if self.prob_win is None:
+            return {'pruned': False}
+
+        estimated_score = np.mean(self.learning_curve_predictor.predict_samples(self.end_iteration))
+        if self.maximize:
+            estimated_score = -estimated_score
+
+        info = {
+            'pruned': self.prob_win < self.pruning_prob_thresh,
+            'pruning': {
+                'estimated_prob_win': self.prob_win,
+                'estimated_score': estimated_score,
+            },
+        }
+        if info['pruned']:
+            n = self.history_iterations[-1]
+            info['pruning']['n_trained_iterations'] = n
+            info['pruning']['n_pruned_iterations'] = self.end_iteration - n
+
+        return info
