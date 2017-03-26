@@ -26,5 +26,5 @@ def pruned_random_search(param_space, eval_func, n_calls):
     return _random_search(param_space, eval_func, n_calls, True)
 
 
-def random_search(param_space, eval_func, n_calls):
+def naive_random_search(param_space, eval_func, n_calls):
     return _random_search(param_space, eval_func, n_calls, False)
