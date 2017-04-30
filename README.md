@@ -1,5 +1,9 @@
 # Darkopt
 
+[![Documentation Status](https://readthedocs.org/projects/darkopt/badge/?version=latest)](http://darkopt.readthedocs.io/en/latest/?badge=latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+
 *Darkopt* is a Python library that implements the *gray-box approach* for automatic hyper-parameter optimization of machine learning algorithms.
 
 Existing hyper-parameter optimization libraries rely on the black-box approach, i.e., they assume almost nothing about ML algorithms and use only trial outcomes. In contrast, Darkopt achieves significantly better performance by employing the novel gray-box approach. By focusing on iterative ML algorithms, it exploits learning curves to predict the outcomes, and terminate hopeless trials earlier. It is applicable for a wide range of ML algorithms including GBDT (e.g., XGBoost) and deep learning (e.g., Chainer).
