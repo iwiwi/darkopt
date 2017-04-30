@@ -13,6 +13,10 @@ from darkopt import learning_curve
 
 class ChainerTrigger(_base):
 
+    """The trigger class for Chainer to prune with learning curve prediction.
+
+    """
+
     # TODO(iwiwi): explain that this class inherits IntervalTrigger because of ProgressBar
 
     def __init__(self, score_key, known_best_score, stop_trigger,
@@ -72,6 +76,13 @@ class ChainerTrigger(_base):
         return self.prob_win < self.pruning_prob_thresh
 
     def info(self):
+        """Returns trial information (e.g., the number of iterations before pruning).
+
+        Returns:
+            A dict that contains the information.
+
+        """
+
         if self.prob_win is None:
             return {'pruned': False}
 

@@ -11,6 +11,10 @@ from darkopt import learning_curve
 
 class XGBoostCallback(object):
 
+    """The callback class for XGBoost to prune with learning curve prediction.
+
+    """
+
     def __init__(self, known_best_score, score_key=None,
                  pruning_prob_thresh=0.05,
                  maximize=False, learning_curve_predictor=None,
@@ -66,6 +70,13 @@ class XGBoostCallback(object):
             raise xgboost.core.EarlyStopException(env.iteration)
 
     def info(self):
+        """Returns trial information (e.g., the number of iterations before pruning).
+
+        Returns:
+            A dict that contains the information.
+
+        """
+
         if self.prob_win is None:
             return {'pruned': False}
 

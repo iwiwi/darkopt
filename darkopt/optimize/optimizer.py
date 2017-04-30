@@ -20,6 +20,10 @@ def _get_inf(maximize):
 
 class Optimizer(object):
 
+    """Hyper-parameter optimizer based on random search algorithm with pruning by learning curve prediction.
+
+    """
+
     def __init__(self, target_func, param_space, engine='random_search', maximize=False, prune=True):
         self.target_func = target_func
         self.param_space = param_space
@@ -31,6 +35,15 @@ class Optimizer(object):
         self.known_best_trial = trial_result_module.TrialResult(_get_inf(maximize))
 
     def optimize(self, max_n_calls=None):
+        """Invoke the optimization.
+
+        Args:
+            max_n_calls: The maximum number to call the ``target_func``.
+
+        Returns:
+            A ``TrialResult`` object that describes the best trial.
+        """
+
         while max_n_calls is None or max_n_calls > 0:
             param = self.engine.suggest()
 
